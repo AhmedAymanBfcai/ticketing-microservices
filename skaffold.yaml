@@ -1,0 +1,20 @@
+# This skaffold config file is goign to watch our infra dir anytime we mae a change to a config file, It will automatically applliy if to our cluster.
+# It also will watch if we do any chagne in our dir and sync all the files inside targetted running container in our cluster.
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: ahmadayman/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
