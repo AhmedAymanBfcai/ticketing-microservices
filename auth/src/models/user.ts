@@ -37,13 +37,14 @@ userSchema.pre('save', async function(done) {
     const hashed = await Password.toHash(this.get('password'));
     this.set('password', hashed);
   }
-  done();
+  done(); // As Mongoose does not have great support for async and await, So we will call done to handle this.
 });
 
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 };
 
+// model func will return something of type UserModel
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 
 export { User };
